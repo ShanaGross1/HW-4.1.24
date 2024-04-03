@@ -29,34 +29,34 @@ namespace Homework_4._1._24.Data.Controllers
             });
         }
 
-        public IActionResult ViewByTag(string tagName)
+        public IActionResult ViewByTag(string name)
         {
             QuestionRepository repo = new(_connectionString);
 
             return View(new QuestionViewModel()
             {
-                Questions = repo.GetQuestionsForTag(tagName),
-                TagName = tagName
+                Questions = repo.GetQuestionsForTag(name),
+                TagName = name
             });
         }
 
-        public IActionResult DidLikeQuestion(int questionId)
+        public IActionResult DidLikeQuestion(int id)
         {
             var questionsLiked = HttpContext.Session.Get<List<int>>("likedQuestionIds");
             return Json(new
             {
-                notPreviouslyLiked = questionsLiked == null || !questionsLiked.Contains(questionId)
+                notPreviouslyLiked = questionsLiked == null || !questionsLiked.Contains(id)
             });
         }
 
         [HttpPost]
-        public void LikeQuestion(int questionId)
+        public void LikeQuestion(int id)
         {
             QuestionRepository repo = new(_connectionString);
-            repo.AddLike(questionId);
+            repo.AddLike(id);
 
             List<int> likedQuestionIds = HttpContext.Session.Get<List<int>>("likedQuestionIds") ?? new();
-            likedQuestionIds.Add(questionId);
+            likedQuestionIds.Add(id);
 
             HttpContext.Session.Set("likedQuestionIds", likedQuestionIds);
         }

@@ -119,10 +119,10 @@ namespace Homework_2._1._24.Data
             return ctx.Answers.ToList();
         }
 
-        public void AddLike(int questionId)
+        public void AddLike(int id)
         {
             using var ctx = new QuestionsDataContext(_connectionString);
-            ctx.Questions.FirstOrDefault(q => q.Id == questionId).Likes++;
+            ctx.Questions.FirstOrDefault(q => q.Id == id).Likes++;
             ctx.SaveChanges();
         }
     }
