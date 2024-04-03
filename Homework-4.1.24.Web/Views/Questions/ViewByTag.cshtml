@@ -1,0 +1,22 @@
+﻿@model QuestionViewModel
+<h1 class="text-center">Questions that contain the @Model.TagName Tag</h1>
+<table class="table-bordered table-striped align-content-center col-md-12">
+    <thead>
+        <tr>
+            <th>Title  </th>
+            <th>Content </th>
+            <th>Tags </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var question in Model.Questions)
+        {
+            <tr>
+                <td>@question.Title</td>
+                <td>@question.Text</td>
+                <td>@string.Join(", ", question.QuestionsTags.Select(t => t.Tag.Name))</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

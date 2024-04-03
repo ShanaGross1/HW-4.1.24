@@ -1,0 +1,78 @@
+﻿@model QuestionViewModel
+
+<div class="row" style="margin-top:100px;">
+    <div class="col-md-10 offset-md-2 bg-light p-4 rounded shadow">
+        <h2> @Model.Question.Title</h2>
+        <hr />
+        <p>@Model.Question.Text</p>
+        <hr />
+        <span>Asked by @Model.AskedBy</span>
+        on
+        <span>@Model.Question.DatePosted.ToLongDateString()</span>
+        <br />
+        <span>Tags:</span>
+        @foreach (var tag in Model.Question.QuestionsTags.Select(t => t.Tag.Name))
+        {
+            <span class="badge bg-primary">
+                <a href="/questions/viewbytag?name=@tag" style="color:black">@tag</a>
+            </span>
+        }
+        <br />
+        <span>Likes: </span> <span id="likes-count">@Model.Question.Likes</span>
+        <br />
+        <input type="hidden" id="question-id" value="@Model.Question.Id" />
+        @* <i style="font-size: 40px; cursor: pointer;" class="bi bi-heart-fill text-danger" ></i> *@
+        <button class="bi bi-heart-fill text-danger">LIKE!</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 offset-md-2 mt-4">
+        <h3>Answers:</h3>
+    </div>
+</div>
+
+@foreach (var answer in Model.Answers)
+{
+    <div class="row">
+        <div class="col-md-8 offset-md-2 card card-body bg-light">
+            <div>@answer.Text</div>
+            <br />
+            <span>Answered by @answer.UserId</span>
+            <span>on</span>
+            <span>@answer.PostedDate.ToLongDateString()</span>
+            <hr />
+        </div>
+    </div>
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    @if (Model.Answers.Count == 0)
+    {
+        <div class="row">
+            <div class="col-md-8 offset-md-2 card card-body bg-light">
+                <h3>No answers yet, be the first to submit one!</h3>
+            </div>
+        </div>
+    }
+
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2 card card-body bg-light mt-4">
+            <h2>Submit an answer</h2>
+            <form method="post" action="/questions/addanswer">
+                <input type="hidden" name="questionid" value="@Model.Question.Id" />
+                <textarea class="form-control" placeholder="Type your answer here..." rows="10" name="text"></textarea>
+                <br />
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+}
+
+
+@section scripts {
+
+    <script src="~/js/view-image.js"></script>
+}

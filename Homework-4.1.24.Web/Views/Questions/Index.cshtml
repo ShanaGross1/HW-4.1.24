@@ -1,0 +1,28 @@
+﻿@using Homework_2._1._24.Data;
+@model QuestionViewModel
+
+@foreach (Question question in Model.Questions)
+{
+    <div class="col-md-8 offset-md-2" style="margin-top:100px">
+        <div class="card card-body bg-light">
+            <h4>
+                <a href="/questions/viewquestion?id=@question.Id">
+                    @question.Title
+                </a>
+            </h4>
+            <div>
+                <span>Tags:</span>
+                @foreach (var tag in question.QuestionsTags.Select(t => t.Tag.Name))
+                {
+                    <span class="badge bg-primary"><a href="/questions/viewbytag?name=@tag" style="color:black">@tag</a></span>
+                }
+            </div>
+            <div style="margin-top: 10px;">
+                @question.Text
+            </div>
+            <span>Likes: @question.Likes</span>
+            <br />
+            <span>@Model.Answers.Count(c=>c.QuestionId == question.Id) answer(s)</span>
+        </div>
+    </div>
+}
